@@ -1,17 +1,22 @@
 import os
 import json
-from mem0 import Mem0
+from mem0 import Memory
 from tqdm import tqdm
 from llama_index.core import Settings
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from dotenv import load_dotenv
 
+load_dotenv()
 # --- CONFIGURATION ---
-PROCESSED_DATA_PATH = 'output/processed_data.json'
+PROCESSED_DATA_PATH = 'output/processed_data_10min.json'
 # We'll create a unique collection for each podcast edit
-COLLECTION_NAME = 'podcast-session-1' 
+SESSION_ID = 'podcast-session-1' 
 # The duration of each memory chunk in seconds. 5-10 seconds is a good starting point.
 CHUNK_DURATION_SECONDS = 5.0 
 LOCAL_EMBED_MODEL = "BAAI/bge-small-en-v1.5"
+OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
+EMBEDDING_DIM = 384
+LOCAL_LLM = "microsoft/Phi-3-mini-4k-instruct"
 
 def populate_memory_from_log():
     """
@@ -39,11 +44,34 @@ def populate_memory_from_log():
     print(f"Initializing local embedding model: {LOCAL_EMBED_MODEL}")
     # This line tells the underlying framework to use our chosen local model
     # for all subsequent embedding tasks.
-    Settings.embed_model = HuggingFaceEmbedding(model_name=LOCAL_EMBED_MODEL)
-
+    config = {
+        "vector_store": {
+            "provider": "qdrant",
+            "config": {
+                "embedding_model_dims": EMBEDDING_DIM
+            }
+        },
+        "embedder": {
+            "provider": "huggingface",
+            "config": {
+                "model": LOCAL_EMBED_MODEL
+            }
+        },
+        "llm": {
+            "provider": "huggingface",
+            "config": {
+                "model": LOCAL_LLM,
+                # These are optional but recommended for loading the model
+                "config": {
+                    "torch_dtype": "auto",
+                    "trust_remote_code": True,
+                }
+            }
+        }
+    }
     # Now, when we initialize Mem0, it will automatically use the model we just set.
-    print(f"Initializing mem0 collection '{COLLECTION_NAME}'...")
-    mem0 = Mem0(collection_name=COLLECTION_NAME)
+    print(f"Initializing mem0 collection '{SESSION_ID}'...")
+    mem0 = Memory.from_config(config)
     
     # Determine the total duration of the podcast from the last word
     total_duration = audio_log[-1]['end']
@@ -79,11 +107,12 @@ def populate_memory_from_log():
             # 4. Add the chunk to mem0 with the timestamp as metadata
             mem0.add(
                 memory_text,
-                metadata={'timestamp': start_time}
+                user_id=SESSION_ID,
+                metadata={'timestamp': start_time},
             )
             num_chunks += 1
 
-    print(f"\n🎉 Success! Populated mem0 collection '{COLLECTION_NAME}' with {num_chunks} memory chunks.")
+    print(f"\n🎉 Success! Populated mem0 collection '{SESSION_ID}' with {num_chunks} memory chunks.")
 
 if __name__ == '__main__':
     populate_memory_from_log()
