@@ -1,0 +1,9 @@
+transformers
+torch
+torchvision
+Pillow
+opencv-python
+openai-whisper
+google-generativeai
+tqdm
+accelerate
