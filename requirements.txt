@@ -7,3 +7,6 @@ openai-whisper
 google-generativeai
 tqdm
 accelerate
+mem0ai
+python-dotenv
+einops
