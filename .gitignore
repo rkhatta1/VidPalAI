@@ -1,0 +1,6 @@
+.env
+.pod
+.venv
+__pycache__
+input/
+llama_index_storage/
