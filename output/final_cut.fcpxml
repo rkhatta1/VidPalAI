@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<fcpxml version="1.9">
+  <resources>
+    <format id="r1" name="FFVideoFormat1080p30" frameDuration="100/3000s" width="1920" height="1080"/>
+    <asset id="r2" name="Source Video" src="file:///home/raajveerkhattar/Documents/Code/pod-pal/input/podcast_video_h264_gpu.mp4" hasVideo="1" format="r1"/>
+  </resources>
+  <library>
+    <event name="AI Podcast Edit">
+      <project name="AI Edited Podcast">
+        <sequence format="r1" duration="10350/30s" tcFormat="NDF">
+          <spine>
+            <asset-clip name="cam_wide" ref="r2" offset="0/30s" duration="135/30s" start="0/30s" format="r1"/>
+            <asset-clip name="cam_host" ref="r2" offset="135/30s" duration="405/30s" start="135/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="540/30s" duration="150/30s" start="540/30s" format="r1"/>
+            <asset-clip name="cam_host" ref="r2" offset="690/30s" duration="330/30s" start="690/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="1020/30s" duration="120/30s" start="1020/30s" format="r1"/>
+            <asset-clip name="cam_host" ref="r2" offset="1140/30s" duration="210/30s" start="1140/30s" format="r1"/>
+            <asset-clip name="cam_wide" ref="r2" offset="1350/30s" duration="90/30s" start="1350/30s" format="r1"/>
+            <asset-clip name="cam_host" ref="r2" offset="1440/30s" duration="210/30s" start="1440/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="1650/30s" duration="120/30s" start="1650/30s" format="r1"/>
+            <asset-clip name="cam_host" ref="r2" offset="1770/30s" duration="150/30s" start="1770/30s" format="r1"/>
+            <asset-clip name="cam_wide" ref="r2" offset="1920/30s" duration="150/30s" start="1920/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="2070/30s" duration="180/30s" start="2070/30s" format="r1"/>
+            <asset-clip name="cam_host" ref="r2" offset="2250/30s" duration="300/30s" start="2250/30s" format="r1"/>
+            <asset-clip name="cam_wide" ref="r2" offset="2550/30s" duration="90/30s" start="2550/30s" format="r1"/>
+            <asset-clip name="cam_host" ref="r2" offset="2640/30s" duration="180/30s" start="2640/30s" format="r1"/>
+            <asset-clip name="cam_wide" ref="r2" offset="2820/30s" duration="120/30s" start="2820/30s" format="r1"/>
+            <asset-clip name="cam_host" ref="r2" offset="2940/30s" duration="150/30s" start="2940/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="3090/30s" duration="330/30s" start="3090/30s" format="r1"/>
+            <asset-clip name="cam_wide" ref="r2" offset="3420/30s" duration="120/30s" start="3420/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="3540/30s" duration="330/30s" start="3540/30s" format="r1"/>
+            <asset-clip name="cam_host" ref="r2" offset="3870/30s" duration="90/30s" start="3870/30s" format="r1"/>
+            <asset-clip name="cam_wide" ref="r2" offset="3960/30s" duration="150/30s" start="3960/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="4110/30s" duration="270/30s" start="4110/30s" format="r1"/>
+            <asset-clip name="cam_host" ref="r2" offset="4380/30s" duration="90/30s" start="4380/30s" format="r1"/>
+            <asset-clip name="cam_wide" ref="r2" offset="4470/30s" duration="300/30s" start="4470/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="4770/30s" duration="240/30s" start="4770/30s" format="r1"/>
+            <asset-clip name="cam_host" ref="r2" offset="5010/30s" duration="90/30s" start="5010/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="5100/30s" duration="150/30s" start="5100/30s" format="r1"/>
+            <asset-clip name="cam_wide" ref="r2" offset="5250/30s" duration="150/30s" start="5250/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="5400/30s" duration="165/30s" start="5400/30s" format="r1"/>
+            <asset-clip name="cam_host" ref="r2" offset="5565/30s" duration="105/30s" start="5565/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="5670/30s" duration="150/30s" start="5670/30s" format="r1"/>
+            <asset-clip name="cam_wide" ref="r2" offset="5820/30s" duration="465/30s" start="5820/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="6285/30s" duration="195/30s" start="6285/30s" format="r1"/>
+            <asset-clip name="cam_wide" ref="r2" offset="6480/30s" duration="180/30s" start="6480/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="6660/30s" duration="255/30s" start="6660/30s" format="r1"/>
+            <asset-clip name="cam_host" ref="r2" offset="6915/30s" duration="105/30s" start="6915/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="7020/30s" duration="570/30s" start="7020/30s" format="r1"/>
+            <asset-clip name="cam_wide" ref="r2" offset="7590/30s" duration="210/30s" start="7590/30s" format="r1"/>
+            <asset-clip name="cam_host" ref="r2" offset="7800/30s" duration="105/30s" start="7800/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="7905/30s" duration="195/30s" start="7905/30s" format="r1"/>
+            <asset-clip name="cam_wide" ref="r2" offset="8100/30s" duration="165/30s" start="8100/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="8265/30s" duration="405/30s" start="8265/30s" format="r1"/>
+            <asset-clip name="cam_host" ref="r2" offset="8670/30s" duration="225/30s" start="8670/30s" format="r1"/>
+            <asset-clip name="cam_wide" ref="r2" offset="8895/30s" duration="165/30s" start="8895/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="9060/30s" duration="480/30s" start="9060/30s" format="r1"/>
+            <asset-clip name="cam_host" ref="r2" offset="9540/30s" duration="150/30s" start="9540/30s" format="r1"/>
+            <asset-clip name="cam_guest" ref="r2" offset="9690/30s" duration="480/30s" start="9690/30s" format="r1"/>
+            <asset-clip name="cam_wide" ref="r2" offset="10170/30s" duration="180/30s" start="10170/30s" format="r1"/>
+          </spine>
+        </sequence>
+      </project>
+    </event>
+  </library>
+</fcpxml>
