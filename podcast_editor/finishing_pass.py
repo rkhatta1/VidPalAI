@@ -5,37 +5,47 @@ from xml.dom import minidom
 
 # --- CONFIGURATION ---
 DIRECTOR_EDITS_PATH = 'output/director_edits.json'
-FINAL_XML_PATH = 'output/final_cut.fcpxml'
-SOURCE_VIDEO_PATH = 'input/podcast_video_h264_gpu.mp4' # Relative path to the video
-VIDEO_FORMAT_ID = "r1"
-VIDEO_ASSET_ID = "r2"
+FINAL_XML_PATH = 'output/final_cut_multicam.fcpxml'
+# [NEW] Define the source files for the XML
+SOURCE_VIDEOS = {
+    "cam_host": "input/cam_host.mp4",
+    "cam_guest": "input/cam_guest.mp4",
+    "cam_wide": "input/cam_wide.mp4"
+}
 FRAME_RATE = 30 # Frames per second
 
-def generate_fcpxml(full_edl, video_path):
+def generate_multicam_fcpxml(full_edl, video_sources):
     """
-    Generates an FCPXML string from a compiled Edit Decision List.
-
-    Args:
-        full_edl (list): A list of all cut decisions, sorted by start time.
-        video_path (str): The relative path to the source video file.
-
-    Returns:
-        str: A pretty-printed FCPXML string.
+    Generates a true multi-camera FCPXML file.
     """
-    print("Generating FCPXML structure...")
+    print("Generating Multi-Camera FCPXML structure...")
     
-    # Get absolute path for the video file for the XML src attribute
-    abs_video_path = os.path.abspath(video_path)
-    
-    # FCPXML structure starts here
     fcpxml = ET.Element('fcpxml', version='1.9')
 
-    # --- Resources Section ---
+    # --- 1. Resources Section ---
     resources = ET.SubElement(fcpxml, 'resources')
-    fmt = ET.SubElement(resources, 'format', id=VIDEO_FORMAT_ID, name=f"FFVideoFormat1080p{FRAME_RATE}", frameDuration=f"100/{FRAME_RATE * 100}s", width="1920", height="1080")
-    asset = ET.SubElement(resources, 'asset', id=VIDEO_ASSET_ID, name="Source Video", src=f"file://{abs_video_path}", hasVideo="1", format=VIDEO_FORMAT_ID)
+    
+    # Define a single format for all clips
+    fmt_id = "r1"
+    ET.SubElement(resources, 'format', id=fmt_id, name=f"FFVideoFormat1080p{FRAME_RATE}", frameDuration=f"100/{FRAME_RATE * 100}s", width="1920", height="1080")
 
-    # --- Library and Project Setup ---
+    # Define each video file as a separate asset
+    asset_ids = {}
+    for i, (cam_id, path) in enumerate(video_sources.items()):
+        asset_id = f"r{i+2}"
+        asset_ids[cam_id] = asset_id
+        abs_path = os.path.abspath(path)
+        ET.SubElement(resources, 'asset', id=asset_id, name=cam_id, src=f"file://{abs_path}", hasVideo="1", format=fmt_id)
+
+    # --- 2. Create the Multicam Clip Resource ---
+    multicam = ET.SubElement(resources, 'multicam', name="AI_Multicam_Clip", format=fmt_id)
+    
+    for cam_id, asset_id in asset_ids.items():
+        mc_angle = ET.SubElement(multicam, 'mc-angle', name=cam_id, angleID=cam_id)
+        # This clip represents the entire source video for that angle
+        ET.SubElement(mc_angle, 'video', ref=asset_id, lane="1", offset="0s", duration="21600000/600s") # Assuming a long duration
+
+    # --- 3. Library and Project Setup ---
     library = ET.SubElement(fcpxml, 'library')
     event = ET.SubElement(library, 'event', name="AI Podcast Edit")
     
@@ -43,42 +53,37 @@ def generate_fcpxml(full_edl, video_path):
     total_duration_rational = f"{int(total_duration_seconds * FRAME_RATE)}/{FRAME_RATE}s"
     
     project = ET.SubElement(event, 'project', name="AI Edited Podcast")
-    sequence = ET.SubElement(project, 'sequence', format=VIDEO_FORMAT_ID, duration=total_duration_rational, tcFormat="NDF")
+    sequence = ET.SubElement(project, 'sequence', format=fmt_id, duration=total_duration_rational, tcFormat="NDF")
     spine = ET.SubElement(sequence, 'spine')
 
-    # --- Spine Section (Timeline) ---
+    # --- 4. Create the Timeline using the Multicam Clip ---
+    mc_clip = ET.SubElement(spine, 'mc-clip', offset="0s", name="AI Edited Sequence", duration=total_duration_rational)
+    
+    # Add the reference to the multicam resource we defined
+    mc_clip.set('ref', multicam.attrib['id']) # This will be auto-generated, e.g., 'multicam-1'
+
     for cut in full_edl:
         start_time = cut['start_time']
         end_time = cut['end_time']
         camera_id = cut['camera_id']
         
-        # Calculate durations and offsets in rational format for FCPXML
-        offset_rational = f"{int(start_time * FRAME_RATE)}/{FRAME_RATE}s"
         duration_rational = f"{int((end_time - start_time) * FRAME_RATE)}/{FRAME_RATE}s"
-        start_rational = f"{int(start_time * FRAME_RATE)}/{FRAME_RATE}s"
+        
+        # This tag tells the mc-clip which angle to use for this duration
+        ET.SubElement(mc_clip, 'mc-source', angleID=camera_id, srcEnable="video", duration=duration_rational)
 
-        # Each cut is an asset-clip in the spine
-        asset_clip = ET.SubElement(spine, 'asset-clip', 
-                                   name=camera_id, 
-                                   ref=VIDEO_ASSET_ID,
-                                   offset=offset_rational,
-                                   duration=duration_rational,
-                                   start=start_rational,
-                                   format=VIDEO_FORMAT_ID)
-                                   
-    # Convert the ElementTree object to a pretty-printed string
+    # --- 5. Finalize and Pretty-Print XML ---
     rough_string = ET.tostring(fcpxml, 'utf-8')
     reparsed = minidom.parseString(rough_string)
     return reparsed.toprettyxml(indent="  ")
 
 def run_finishing_pass():
     """
-    Stitches together director edits and converts them into a final
-    FCPXML file for video editing software.
+    Stitches edits and converts them into a final FCPXML file.
     """
     print("--- Starting Finishing Pass (Pass 3) ---")
 
-    # --- 1. Load the Director's Edits ---
+    # Load director's edits
     print(f"Loading director edits from {DIRECTOR_EDITS_PATH}...")
     try:
         with open(DIRECTOR_EDITS_PATH, 'r') as f:
@@ -87,17 +92,16 @@ def run_finishing_pass():
         print(f"Error: Director edits file not found. Please run director_pass.py first.")
         return
 
-    # --- 2. Stitch all cuts into a single timeline ---
+    # Stitch all cuts into a single timeline
     print("Stitching all chapter edits into a single timeline...")
     full_edl = []
-    for chapter_edit in director_edits_data:
-        # Assumes the JSON from Gemini has a 'cuts' key as per the prompt
+    # [MODIFIED] The top-level key from the new director_pass.py is 'director_edits'
+    for chapter_edit in director_edits_data.get('director_edits', []):
         if 'edl' in chapter_edit and 'cuts' in chapter_edit['edl']:
             full_edl.extend(chapter_edit['edl']['cuts'])
         else:
-            print(f"Warning: Chapter '{chapter_edit.get('chapter_title')}' is missing a valid 'edl' with 'cuts'. Skipping.")
+            print(f"Warning: Chapter '{chapter_edit.get('chapter_title')}' missing valid cuts. Skipping.")
     
-    # Sort by start time to ensure chronological order
     full_edl.sort(key=lambda x: x['start_time'])
 
     if not full_edl:
@@ -106,14 +110,14 @@ def run_finishing_pass():
         
     print(f"Successfully compiled {len(full_edl)} cuts into one timeline.")
 
-    # --- 3. Generate and Save FCPXML file ---
-    fcpxml_content = generate_fcpxml(full_edl, SOURCE_VIDEO_PATH)
+    # Generate and Save FCPXML
+    fcpxml_content = generate_multicam_fcpxml(full_edl, SOURCE_VIDEOS)
 
     with open(FINAL_XML_PATH, "w") as f:
         f.write(fcpxml_content)
         
-    print(f"\n🎉 Success! Final EDL saved to: {FINAL_XML_PATH}")
-    print("You can now import this file into Adobe Premiere Pro or Final Cut Pro.")
+    print(f"\n🎉 Success! Multi-Camera EDL saved to: {FINAL_XML_PATH}")
+    print("You can now import this file directly into Premiere Pro.")
     print("--- Finishing Pass Finished ---")
 
 if __name__ == '__main__':
