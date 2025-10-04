@@ -1,5 +1,8 @@
 import os
 import json
+import sys
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(project_root)
 import google.generativeai as genai
 from tqdm import tqdm
 from rag_agent import get_index
@@ -8,7 +11,7 @@ from rag_agent import get_index
 STRUCTURAL_MAP_PATH = 'output/structural_map.json'
 PROCESSED_DATA_PATH = 'output/processed_data_multi_cam.json'
 OUTPUT_PATH = 'output/director_edits.json'
-GEMINI_MODEL = "gemini-1.5-pro-latest"
+GEMINI_MODEL = "gemini-2.5-pro"
 
 # --- Gemini API Configuration ---
 try:

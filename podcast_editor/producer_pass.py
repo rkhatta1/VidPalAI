@@ -6,7 +6,7 @@ from tqdm import tqdm
 # --- CONFIGURATION ---
 PROCESSED_DATA_PATH = 'output/processed_data_multi_cam.json'
 OUTPUT_PATH = 'output/structural_map.json'
-OLLAMA_LLM = "gemma2:2b"
+OLLAMA_LLM = "gemma3:4b"
 
 def run_producer_pass():
     """
