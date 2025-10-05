@@ -1,56 +1,170 @@
 <?xml version="1.0" ?>
-<fcpxml version="1.9">
+<fcpxml version="1.10">
   <resources>
     <format id="r1" name="FFVideoFormat1080p30" frameDuration="100/3000s" width="1920" height="1080"/>
-    <asset id="r2" name="cam_host" src="file:///home/raajveer/Documents/Code/VidPalAI/input/cam_host.mp4" hasVideo="1" format="r1"/>
-    <asset id="r3" name="cam_guest" src="file:///home/raajveer/Documents/Code/VidPalAI/input/cam_guest.mp4" hasVideo="1" format="r1"/>
-    <asset id="r4" name="cam_wide" src="file:///home/raajveer/Documents/Code/VidPalAI/input/cam_wide.mp4" hasVideo="1" format="r1"/>
-    <multicam id="r5" name="AI_Multicam_Clip" format="r1">
-      <mc-angle name="cam_host" angleID="cam_host">
-        <video ref="r2" lane="1" offset="0s" duration="21600000/600s"/>
-      </mc-angle>
-      <mc-angle name="cam_guest" angleID="cam_guest">
-        <video ref="r3" lane="1" offset="0s" duration="21600000/600s"/>
-      </mc-angle>
-      <mc-angle name="cam_wide" angleID="cam_wide">
-        <video ref="r4" lane="1" offset="0s" duration="21600000/600s"/>
-      </mc-angle>
-    </multicam>
+    <asset id="r2" name="cam_host" hasVideo="1" hasAudio="1" format="r1" duration="7200/30s">
+      <media-rep kind="original-media" src="file:///E:/Random/VidPal/input/cam_host.mp4"/>
+    </asset>
+    <asset id="r3" name="cam_guest" hasVideo="1" hasAudio="1" format="r1" duration="7200/30s">
+      <media-rep kind="original-media" src="file:///E:/Random/VidPal/input/cam_guest.mp4"/>
+    </asset>
+    <asset id="r4" name="cam_wide" hasVideo="1" hasAudio="1" format="r1" duration="7200/30s">
+      <media-rep kind="original-media" src="file:///E:/Random/VidPal/input/cam_wide.mp4"/>
+    </asset>
   </resources>
   <library>
     <event name="AI Podcast Edit">
-      <project name="AI Edited Podcast">
-        <sequence format="r1" duration="4080/30s" tcFormat="NDF">
+      <project name="AI Edited Podcast (Flattened)">
+        <sequence format="r1" duration="7200/30s" tcStart="0s" tcFormat="NDF">
           <spine>
-            <mc-clip offset="0s" name="AI Edited Sequence" duration="4080/30s" ref="r5">
-              <mc-source angleID="cam_wide" srcEnable="video" duration="105/30s"/>
-              <mc-source angleID="cam_host" srcEnable="video" duration="135/30s"/>
-              <mc-source angleID="cam_guest" srcEnable="video" duration="105/30s"/>
-              <mc-source angleID="cam_host" srcEnable="video" duration="165/30s"/>
-              <mc-source angleID="cam_guest" srcEnable="video" duration="90/30s"/>
-              <mc-source angleID="cam_host" srcEnable="video" duration="150/30s"/>
-              <mc-source angleID="cam_wide" srcEnable="video" duration="90/30s"/>
-              <mc-source angleID="cam_wide" srcEnable="video" duration="135/30s"/>
-              <mc-source angleID="cam_host" srcEnable="video" duration="195/30s"/>
-              <mc-source angleID="cam_guest" srcEnable="video" duration="150/30s"/>
-              <mc-source angleID="cam_host" srcEnable="video" duration="225/30s"/>
-              <mc-source angleID="cam_wide" srcEnable="video" duration="135/30s"/>
-              <mc-source angleID="cam_host" srcEnable="video" duration="210/30s"/>
-              <mc-source angleID="cam_wide" srcEnable="video" duration="120/30s"/>
-              <mc-source angleID="cam_host" srcEnable="video" duration="165/30s"/>
-              <mc-source angleID="cam_guest" srcEnable="video" duration="135/30s"/>
-              <mc-source angleID="cam_host" srcEnable="video" duration="150/30s"/>
-              <mc-source angleID="cam_wide" srcEnable="video" duration="165/30s"/>
-              <mc-source angleID="cam_guest" srcEnable="video" duration="135/30s"/>
-              <mc-source angleID="cam_host" srcEnable="video" duration="180/30s"/>
-              <mc-source angleID="cam_wide" srcEnable="video" duration="135/30s"/>
-              <mc-source angleID="cam_host" srcEnable="video" duration="165/30s"/>
-              <mc-source angleID="cam_guest" srcEnable="video" duration="150/30s"/>
-              <mc-source angleID="cam_wide" srcEnable="video" duration="165/30s"/>
-              <mc-source angleID="cam_host" srcEnable="video" duration="195/30s"/>
-              <mc-source angleID="cam_guest" srcEnable="video" duration="150/30s"/>
-              <mc-source angleID="cam_wide" srcEnable="video" duration="180/30s"/>
-            </mc-clip>
+            <clip name="cam_wide" offset="0/30s" duration="75/30s" format="r1">
+              <video ref="r4" start="0/30s" duration="75/30s"/>
+              <audio ref="r4" start="0/30s" duration="75/30s"/>
+            </clip>
+            <clip name="cam_guest" offset="75/30s" duration="405/30s" format="r1">
+              <video ref="r3" start="75/30s" duration="405/30s"/>
+              <audio ref="r3" start="75/30s" duration="405/30s"/>
+            </clip>
+            <clip name="cam_host" offset="480/30s" duration="60/30s" format="r1">
+              <video ref="r2" start="480/30s" duration="60/30s"/>
+              <audio ref="r2" start="480/30s" duration="60/30s"/>
+            </clip>
+            <clip name="cam_wide" offset="540/30s" duration="75/30s" format="r1">
+              <video ref="r4" start="540/30s" duration="75/30s"/>
+              <audio ref="r4" start="540/30s" duration="75/30s"/>
+            </clip>
+            <clip name="cam_guest" offset="615/30s" duration="330/30s" format="r1">
+              <video ref="r3" start="615/30s" duration="330/30s"/>
+              <audio ref="r3" start="615/30s" duration="330/30s"/>
+            </clip>
+            <clip name="cam_wide" offset="945/30s" duration="195/30s" format="r1">
+              <video ref="r4" start="945/30s" duration="195/30s"/>
+              <audio ref="r4" start="945/30s" duration="195/30s"/>
+            </clip>
+            <clip name="cam_wide" offset="1140/30s" duration="75/30s" format="r1">
+              <video ref="r4" start="1140/30s" duration="75/30s"/>
+              <audio ref="r4" start="1140/30s" duration="75/30s"/>
+            </clip>
+            <clip name="cam_guest" offset="1215/30s" duration="435/30s" format="r1">
+              <video ref="r3" start="1215/30s" duration="435/30s"/>
+              <audio ref="r3" start="1215/30s" duration="435/30s"/>
+            </clip>
+            <clip name="cam_host" offset="1650/30s" duration="90/30s" format="r1">
+              <video ref="r2" start="1650/30s" duration="90/30s"/>
+              <audio ref="r2" start="1650/30s" duration="90/30s"/>
+            </clip>
+            <clip name="cam_guest" offset="1740/30s" duration="315/30s" format="r1">
+              <video ref="r3" start="1740/30s" duration="315/30s"/>
+              <audio ref="r3" start="1740/30s" duration="315/30s"/>
+            </clip>
+            <clip name="cam_host" offset="2055/30s" duration="105/30s" format="r1">
+              <video ref="r2" start="2055/30s" duration="105/30s"/>
+              <audio ref="r2" start="2055/30s" duration="105/30s"/>
+            </clip>
+            <clip name="cam_wide" offset="2160/30s" duration="90/30s" format="r1">
+              <video ref="r4" start="2160/30s" duration="90/30s"/>
+              <audio ref="r4" start="2160/30s" duration="90/30s"/>
+            </clip>
+            <clip name="cam_host" offset="2250/30s" duration="225/30s" format="r1">
+              <video ref="r2" start="2250/30s" duration="225/30s"/>
+              <audio ref="r2" start="2250/30s" duration="225/30s"/>
+            </clip>
+            <clip name="cam_guest" offset="2475/30s" duration="135/30s" format="r1">
+              <video ref="r3" start="2475/30s" duration="135/30s"/>
+              <audio ref="r3" start="2475/30s" duration="135/30s"/>
+            </clip>
+            <clip name="cam_host" offset="2610/30s" duration="240/30s" format="r1">
+              <video ref="r2" start="2610/30s" duration="240/30s"/>
+              <audio ref="r2" start="2610/30s" duration="240/30s"/>
+            </clip>
+            <clip name="cam_wide" offset="2850/30s" duration="195/30s" format="r1">
+              <video ref="r4" start="2850/30s" duration="195/30s"/>
+              <audio ref="r4" start="2850/30s" duration="195/30s"/>
+            </clip>
+            <clip name="cam_guest" offset="3045/30s" duration="135/30s" format="r1">
+              <video ref="r3" start="3045/30s" duration="135/30s"/>
+              <audio ref="r3" start="3045/30s" duration="135/30s"/>
+            </clip>
+            <clip name="cam_host" offset="3180/30s" duration="420/30s" format="r1">
+              <video ref="r2" start="3180/30s" duration="420/30s"/>
+              <audio ref="r2" start="3180/30s" duration="420/30s"/>
+            </clip>
+            <clip name="cam_wide" offset="3600/30s" duration="75/30s" format="r1">
+              <video ref="r4" start="3600/30s" duration="75/30s"/>
+              <audio ref="r4" start="3600/30s" duration="75/30s"/>
+            </clip>
+            <clip name="cam_host" offset="3675/30s" duration="435/30s" format="r1">
+              <video ref="r2" start="3675/30s" duration="435/30s"/>
+              <audio ref="r2" start="3675/30s" duration="435/30s"/>
+            </clip>
+            <clip name="cam_guest" offset="4110/30s" duration="84/30s" format="r1">
+              <video ref="r3" start="4110/30s" duration="84/30s"/>
+              <audio ref="r3" start="4110/30s" duration="84/30s"/>
+            </clip>
+            <clip name="cam_guest" offset="4194/30s" duration="320/30s" format="r1">
+              <video ref="r3" start="4194/30s" duration="320/30s"/>
+              <audio ref="r3" start="4194/30s" duration="320/30s"/>
+            </clip>
+            <clip name="cam_host" offset="4515/30s" duration="105/30s" format="r1">
+              <video ref="r2" start="4515/30s" duration="105/30s"/>
+              <audio ref="r2" start="4515/30s" duration="105/30s"/>
+            </clip>
+            <clip name="cam_guest" offset="4620/30s" duration="360/30s" format="r1">
+              <video ref="r3" start="4620/30s" duration="360/30s"/>
+              <audio ref="r3" start="4620/30s" duration="360/30s"/>
+            </clip>
+            <clip name="cam_wide" offset="4980/30s" duration="120/30s" format="r1">
+              <video ref="r4" start="4980/30s" duration="120/30s"/>
+              <audio ref="r4" start="4980/30s" duration="120/30s"/>
+            </clip>
+            <clip name="cam_guest" offset="5100/30s" duration="450/30s" format="r1">
+              <video ref="r3" start="5100/30s" duration="450/30s"/>
+              <audio ref="r3" start="5100/30s" duration="450/30s"/>
+            </clip>
+            <clip name="cam_guest" offset="5550/30s" duration="165/30s" format="r1">
+              <video ref="r3" start="5550/30s" duration="165/30s"/>
+              <audio ref="r3" start="5550/30s" duration="165/30s"/>
+            </clip>
+            <clip name="cam_wide" offset="5715/30s" duration="105/30s" format="r1">
+              <video ref="r4" start="5715/30s" duration="105/30s"/>
+              <audio ref="r4" start="5715/30s" duration="105/30s"/>
+            </clip>
+            <clip name="cam_guest" offset="5820/30s" duration="180/30s" format="r1">
+              <video ref="r3" start="5820/30s" duration="180/30s"/>
+              <audio ref="r3" start="5820/30s" duration="180/30s"/>
+            </clip>
+            <clip name="cam_host" offset="6000/30s" duration="105/30s" format="r1">
+              <video ref="r2" start="6000/30s" duration="105/30s"/>
+              <audio ref="r2" start="6000/30s" duration="105/30s"/>
+            </clip>
+            <clip name="cam_guest" offset="6105/30s" duration="105/30s" format="r1">
+              <video ref="r3" start="6105/30s" duration="105/30s"/>
+              <audio ref="r3" start="6105/30s" duration="105/30s"/>
+            </clip>
+            <clip name="cam_wide" offset="6210/30s" duration="120/30s" format="r1">
+              <video ref="r4" start="6210/30s" duration="120/30s"/>
+              <audio ref="r4" start="6210/30s" duration="120/30s"/>
+            </clip>
+            <clip name="cam_host" offset="6330/30s" duration="210/30s" format="r1">
+              <video ref="r2" start="6330/30s" duration="210/30s"/>
+              <audio ref="r2" start="6330/30s" duration="210/30s"/>
+            </clip>
+            <clip name="cam_guest" offset="6540/30s" duration="120/30s" format="r1">
+              <video ref="r3" start="6540/30s" duration="120/30s"/>
+              <audio ref="r3" start="6540/30s" duration="120/30s"/>
+            </clip>
+            <clip name="cam_host" offset="6660/30s" duration="225/30s" format="r1">
+              <video ref="r2" start="6660/30s" duration="225/30s"/>
+              <audio ref="r2" start="6660/30s" duration="225/30s"/>
+            </clip>
+            <clip name="cam_wide" offset="6885/30s" duration="105/30s" format="r1">
+              <video ref="r4" start="6885/30s" duration="105/30s"/>
+              <audio ref="r4" start="6885/30s" duration="105/30s"/>
+            </clip>
+            <clip name="cam_host" offset="6990/30s" duration="210/30s" format="r1">
+              <video ref="r2" start="6990/30s" duration="210/30s"/>
+              <audio ref="r2" start="6990/30s" duration="210/30s"/>
+            </clip>
           </spine>
         </sequence>
       </project>

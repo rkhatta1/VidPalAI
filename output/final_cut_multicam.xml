@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<fcpxml version="1.10">
+  <resources>
+    <format id="r1" name="FFVideoFormat1080p30" frameDuration="100/3000s" width="1920" height="1080"/>
+    <asset id="r2" name="cam_host" src="file:///E:/Random/VidPal/input/cam_host.mp4" hasVideo="1" format="r1"/>
+    <asset id="r3" name="cam_guest" src="file:///E:/Random/VidPal/input/cam_guest.mp4" hasVideo="1" format="r1"/>
+    <asset id="r4" name="cam_wide" src="file:///E:/Random/VidPal/input/cam_wide.mp4" hasVideo="1" format="r1"/>
+    <multicam id="r5" name="AI_Multicam_Clip" format="r1">
+      <mc-angle name="cam_host" angleID="cam_host">
+        <video ref="r2" lane="1" offset="0s" duration="21600000/600s"/>
+      </mc-angle>
+      <mc-angle name="cam_guest" angleID="cam_guest">
+        <video ref="r3" lane="1" offset="0s" duration="21600000/600s"/>
+      </mc-angle>
+      <mc-angle name="cam_wide" angleID="cam_wide">
+        <video ref="r4" lane="1" offset="0s" duration="21600000/600s"/>
+      </mc-angle>
+    </multicam>
+  </resources>
+  <library>
+    <event name="AI Podcast Edit">
+      <project name="AI Edited Podcast">
+        <sequence format="r1" duration="4080/30s" tcFormat="NDF">
+          <spine>
+            <mc-clip offset="0s" name="AI Edited Sequence" duration="4080/30s" ref="r5">
+              <mc-source angleID="cam_wide" srcEnable="video" duration="105/30s"/>
+              <mc-source angleID="cam_host" srcEnable="video" duration="135/30s"/>
+              <mc-source angleID="cam_guest" srcEnable="video" duration="105/30s"/>
+              <mc-source angleID="cam_host" srcEnable="video" duration="165/30s"/>
+              <mc-source angleID="cam_guest" srcEnable="video" duration="90/30s"/>
+              <mc-source angleID="cam_host" srcEnable="video" duration="150/30s"/>
+              <mc-source angleID="cam_wide" srcEnable="video" duration="90/30s"/>
+              <mc-source angleID="cam_wide" srcEnable="video" duration="135/30s"/>
+              <mc-source angleID="cam_host" srcEnable="video" duration="195/30s"/>
+              <mc-source angleID="cam_guest" srcEnable="video" duration="150/30s"/>
+              <mc-source angleID="cam_host" srcEnable="video" duration="225/30s"/>
+              <mc-source angleID="cam_wide" srcEnable="video" duration="135/30s"/>
+              <mc-source angleID="cam_host" srcEnable="video" duration="210/30s"/>
+              <mc-source angleID="cam_wide" srcEnable="video" duration="120/30s"/>
+              <mc-source angleID="cam_host" srcEnable="video" duration="165/30s"/>
+              <mc-source angleID="cam_guest" srcEnable="video" duration="135/30s"/>
+              <mc-source angleID="cam_host" srcEnable="video" duration="150/30s"/>
+              <mc-source angleID="cam_wide" srcEnable="video" duration="165/30s"/>
+              <mc-source angleID="cam_guest" srcEnable="video" duration="135/30s"/>
+              <mc-source angleID="cam_host" srcEnable="video" duration="180/30s"/>
+              <mc-source angleID="cam_wide" srcEnable="video" duration="135/30s"/>
+              <mc-source angleID="cam_host" srcEnable="video" duration="165/30s"/>
+              <mc-source angleID="cam_guest" srcEnable="video" duration="150/30s"/>
+              <mc-source angleID="cam_wide" srcEnable="video" duration="165/30s"/>
+              <mc-source angleID="cam_host" srcEnable="video" duration="195/30s"/>
+              <mc-source angleID="cam_guest" srcEnable="video" duration="150/30s"/>
+              <mc-source angleID="cam_wide" srcEnable="video" duration="180/30s"/>
+            </mc-clip>
+          </spine>
+        </sequence>
+      </project>
+    </event>
+  </library>
+</fcpxml>

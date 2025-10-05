@@ -1,28 +1,34 @@
 {
   "chapters": [
     {
-      "title": "Initial Accusation and Reflection",
-      "summary": "The speaker begins by directly accusing someone of taking advantage of him and reflecting on past financial support given while he was vulnerable.",
+      "title": "Introduction & Guest Speakers",
+      "summary": "The episode begins with an introduction of the hosts and guest speakers \u2013 Brittany Rosario, Andrew Buffet, and Jesse Prut \u2013 and highlights their affiliations with the Dell Web School Construction and ASU.",
       "start_time": 0,
-      "end_time": 28
+      "end_time": 38
     },
     {
-      "title": "Confusion and Disconnection",
-      "summary": "The speaker expresses confusion and hurt related to a perceived lack of connection and knowledge from the other person, referencing a strained relationship.",
-      "start_time": 28,
-      "end_time": 63
+      "title": "Dell Web School & Recruitment Goals",
+      "summary": "The speakers outline the Dell Web School\u2019s mission to help students secure their first job and emphasize the requirement of two internships for graduation, setting the stage for the episode\u2019s focus.",
+      "start_time": 38,
+      "end_time": 75
     },
     {
-      "title": "Repeating the Core Complaint",
-      "summary": "The speaker reiterates the core accusation \u2013 the other person is taking advantage of his generosity and affection.",
-      "start_time": 63,
-      "end_time": 98
+      "title": "Importance of the Resume",
+      "summary": "Brittany Rosario emphasizes the critical role of a well-crafted resume as the first point of contact with potential employers, highlighting the limited time recruiters have to review resumes.",
+      "start_time": 75,
+      "end_time": 120
     },
     {
-      "title": "Expressing Fear and Loss of Control",
-      "summary": "The speaker reveals a fear of the other person\u2019s actions and indicates a loss of control over his own decisions and well-being.",
-      "start_time": 98,
-      "end_time": 136
+      "title": "Resume Content & Relevance",
+      "summary": "Brittany discusses the importance of focusing on relevant skills and technologies on a resume, advising students to prioritize relatable information and avoid overwhelming recruiters with a long list of skills.",
+      "start_time": 120,
+      "end_time": 185
+    },
+    {
+      "title": "High School Experience & GPA",
+      "summary": "The conversation shifts to whether high school experience and GPA should be included on a resume, particularly for incoming freshmen, with Andrew and Brittany offering guidance on what to include based on a student's background.",
+      "start_time": 185,
+      "end_time": 240
     }
   ]
 }
