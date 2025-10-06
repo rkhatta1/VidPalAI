@@ -36,6 +36,7 @@ def load_and_prepare_documents():
 
     audio_log = data.get('master_audio_log', [])
     video_logs = data.get('video_logs', {})
+    speaker_data = data.get('speaker_data', [])
     if not audio_log: return []
 
     documents = []
@@ -45,25 +46,49 @@ def load_and_prepare_documents():
     for start_time in range(0, int(total_duration), int(CHUNK_DURATION_SECONDS)):
         end_time = start_time + CHUNK_DURATION_SECONDS
         
-        # Get transcript chunk from the master audio log
-        words_in_chunk = [item['word'] for item in audio_log if start_time <= item['start'] < end_time]
+        # Get transcript with speaker labels
+        words_in_chunk = []
+        current_speaker = None
+        speaker_text = []
+        
+        for item in audio_log:
+            if start_time <= item['start'] < end_time:
+                word = item['word']
+                speaker = item.get('speaker', 'unknown')
+                
+                if speaker != current_speaker:
+                    if speaker_text:
+                        words_in_chunk.append(f"[{current_speaker.upper()}]: {' '.join(speaker_text)}")
+                        speaker_text = []
+                    current_speaker = speaker
+                
+                speaker_text.append(word)
+        
+        # Add final speaker segment
+        if speaker_text:
+            words_in_chunk.append(f"[{current_speaker.upper()}]: {' '.join(speaker_text)}")
+        
         transcript_chunk = " ".join(words_in_chunk)
         
-        # [NEW] Combine visual context from all cameras for this chunk
+        # Add visual context with person labels
         visual_context = ""
         for cam_id, video_log in video_logs.items():
-            # Find the most recent description from this camera for the chunk's start time
-            relevant_descriptions = [item['description'] for item in video_log if item['timestamp'] <= start_time]
+            relevant_descriptions = [item for item in video_log if item['timestamp'] <= start_time]
             if relevant_descriptions:
-                last_description = relevant_descriptions[-1]
-                visual_context += f"[{cam_id} VISUAL]: {last_description}\n"
+                last_item = relevant_descriptions[-1]
+                person = last_item.get('shows_person', 'unknown')
+                desc = last_item['description']
+                visual_context += f"[{cam_id} - showing {person}]: {desc}\n"
         
         if transcript_chunk:
-            memory_text = f"[Time: ~{start_time}s]\n{visual_context}[TRANSCRIPT: {transcript_chunk}]"
+            memory_text = f"[Time: ~{start_time}s]\n{visual_context}[TRANSCRIPT]:\n{transcript_chunk}"
             
             doc = Document(
                 text=memory_text,
-                metadata={"start_time": start_time, "end_time": end_time}
+                metadata={
+                    "start_time": start_time,
+                    "end_time": end_time
+                }
             )
             documents.append(doc)
             

@@ -8,7 +8,13 @@ import time
 MODEL_ID = "apple/FastVLM-0.5B"
 IMAGE_TOKEN_INDEX = -200
 
-def describe_video(video_path: str, interval_seconds: int = 1, duration_limit_seconds: int = None):
+CAMERA_PERSON_MAP = {
+    "cam_host": "host",
+    "cam_guest": "guest",
+    "cam_wide": "both host and guest"
+}
+
+def describe_video(video_path: str, interval_seconds: int = 2, duration_limit_seconds: int = None, camera_id: str = None):
     """
     Processes a limited duration of a video file using a single thread.
     """
@@ -23,9 +29,16 @@ def describe_video(video_path: str, interval_seconds: int = 1, duration_limit_se
         trust_remote_code=True,
     )
     print("Model loaded successfully.")
-
+    
+    person_context = ""
+    if camera_id and camera_id in CAMERA_PERSON_MAP:
+        person_context = f" This camera shows {CAMERA_PERSON_MAP[camera_id]}."
+    
+    messages = [{
+        "role": "user", 
+        "content": f"<image>\nDescribe what is happening in this scene.{person_context}"
+    }]
     # Prepare the prompt template
-    messages = [{"role": "user", "content": "<image>\nDescribe what is happening in this scene."}]
     rendered_prompt = tokenizer.apply_chat_template(messages, add_generation_prompt=True, tokenize=False)
     
     pre_prompt, post_prompt = rendered_prompt.split("<image>", 1)
@@ -86,7 +99,9 @@ def describe_video(video_path: str, interval_seconds: int = 1, duration_limit_se
         timestamp = frame_num / fps
         video_log.append({
             "timestamp": timestamp,
-            "description": description
+            "description": description,
+            "camera": camera_id,
+            "shows_person": CAMERA_PERSON_MAP.get(camera_id, "unknown")
         })
         torch.cuda.empty_cache()
 
